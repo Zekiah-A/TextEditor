@@ -19,10 +19,12 @@
 			<!--File menu-->
 			<Menu>
 				<MenuItem Header="_File">
-					<MenuItem Header="Open F_older"/>
-					<MenuItem Header="Open F_ile"/>
+					<MenuItem Header="Open F_older" Command="{Binding OpenFolderCommand}"/>
+					<MenuItem Header="Open F_ile" Command="{Binding OpenFileCommand}"/>
 					<Separator/>
-					<MenuItem Header="S_ave"/>
+					
+					<!--Save button should be disabled if no file is opened-->
+					<MenuItem IsEnabled="{Binding IsReadyToEdit}" Header="S_ave File" Command="{Binding SaveFileCommand}"/>
 				</MenuItem>
 			</Menu>
 

@@ -23,7 +23,9 @@ namespace TextEditorAvalonia.Services
                 await streamWriter.WriteAsync(content);
                 SaveSucceeded = true;
             }
-            catch (Exception exception) when (exception is DirectoryNotFoundException || exception is IOException || exception is UnauthorizedAccessException)
+            catch (Exception exception) when (exception is DirectoryNotFoundException
+                                              || exception is IOException || exception is UnauthorizedAccessException
+                                              || exception is ArgumentException)
             {
                 SaveSucceeded = false;
             }

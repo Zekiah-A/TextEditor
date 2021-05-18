@@ -5,7 +5,7 @@
 		x:Class="TextEditorAvalonia.Views.MainWindow"
 		Icon="/Assets/texteditor-logo.ico"
 		Height="576" Width="1024" MinHeight="576" MinWidth="1024" WindowStartupLocation="CenterScreen"
-		Title="{Binding ApplicationTitle}" ExtendClientAreaToDecorationsHint="True">
+	    Title="{Binding ApplicationTitle}" ExtendClientAreaToDecorationsHint="True">
 	<Design.DataContext>
 		<vm:MainWindowViewModel/>
 	</Design.DataContext>
@@ -13,8 +13,8 @@
 	<Grid ColumnDefinitions="Auto *" RowDefinitions="Auto *">
 		<Grid Grid.Column="1" RowDefinitions="0" IsHitTestVisible="False"/>
 
-		<StackPanel VerticalAlignment="Center" Orientation="Horizontal" Spacing="5" Margin="7.5 0 0 0" Grid.Column="0" Grid.Row="0">
-			<Image Source="/Assets/texteditor-logo.ico" Width="16" Height="16"/>
+		<StackPanel VerticalAlignment="Center" Orientation="Horizontal" Spacing="5" Margin="5 0 0 0" Grid.Column="0" Grid.Row="0">
+			<Image Source="/Assets/texteditor-logo.ico" Width="25" Height="25"/>
 
 			<!--File menu-->
 			<Menu>

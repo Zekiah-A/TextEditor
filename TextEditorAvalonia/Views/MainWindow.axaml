@@ -14,15 +14,15 @@
 		<Grid Grid.Column="1" RowDefinitions="0" IsHitTestVisible="False"/>
 
 		<StackPanel VerticalAlignment="Center" Orientation="Horizontal" Spacing="5" Margin="7.5 0 0 0" Grid.Column="0" Grid.Row="0">
-			<Image Source="/Assets/texteditor-logo.ico" Width="16" Height="16"></Image>
+			<Image Source="/Assets/texteditor-logo.ico" Width="16" Height="16"/>
 
 			<!--File menu-->
 			<Menu>
 				<MenuItem Header="_File">
-					<MenuItem Header="Open F_older"></MenuItem>
-					<MenuItem Header="Open F_ile"></MenuItem>
-					<Separator></Separator>
-					<MenuItem Header="S_ave"></MenuItem>
+					<MenuItem Header="Open F_older"/>
+					<MenuItem Header="Open F_ile"/>
+					<Separator/>
+					<MenuItem Header="S_ave"/>
 				</MenuItem>
 			</Menu>
 
@@ -32,20 +32,20 @@
 
 					<!--Not functional yet-->
 					<MenuItem Header="_Theme">
-						<ToggleSwitch  OnContent="Light" OffContent="Dark"></ToggleSwitch>
+						<ToggleSwitch  OnContent="Light" OffContent="Dark"/>
 					</MenuItem>
 
-					<MenuItem Header="_GitHub"></MenuItem>
-					<Separator></Separator>
-					<MenuItem Header="_Exit"></MenuItem>
+					<MenuItem Header="_GitHub"/>
+					<Separator/>
+					<MenuItem Header="_Exit"/>
 				</MenuItem>
 			</Menu>
 		</StackPanel>
 
 		<Label Content="Unnamed" VerticalAlignment="Center" HorizontalAlignment="Center"
-			   Grid.ColumnSpan="2" IsHitTestVisible="False"></Label>
+			   Grid.ColumnSpan="2" IsHitTestVisible="False"/>
 
 		<!--Responsible for showing the text editor view-->
-		<ContentControl IsVisible="False" Content=""></ContentControl>
+		<ContentControl IsVisible="False" Content=""/>
 	</Grid>
 </Window>

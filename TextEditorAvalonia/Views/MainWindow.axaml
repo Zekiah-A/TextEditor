@@ -5,7 +5,7 @@
 		x:Class="TextEditorAvalonia.Views.MainWindow"
 		Icon="/Assets/texteditor-logo.ico"
 		Height="576" Width="1024" MinHeight="576" MinWidth="1024" WindowStartupLocation="CenterScreen"
-		Title="TextEditorAvalonia" ExtendClientAreaToDecorationsHint="True">
+		Title="{Binding ApplicationTitle}" ExtendClientAreaToDecorationsHint="True">
 	<Design.DataContext>
 		<vm:MainWindowViewModel/>
 	</Design.DataContext>
@@ -42,10 +42,11 @@
 			</Menu>
 		</StackPanel>
 
-		<Label Content="Unnamed" VerticalAlignment="Center" HorizontalAlignment="Center"
+		<Label Content="{Binding ApplicationTitle}" VerticalAlignment="Center" HorizontalAlignment="Center"
 			   Grid.ColumnSpan="2" IsHitTestVisible="False"/>
 
 		<!--Responsible for showing the text editor view-->
-		<ContentControl IsVisible="False" Content=""/>
+		<ContentControl IsVisible="{Binding IsReadyToEdit}" Content="{Binding TextEditorViewModel}"
+						Grid.ColumnSpan="2" Grid.Row="1"/>
 	</Grid>
 </Window>

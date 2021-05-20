@@ -16,8 +16,9 @@ namespace TextEditorAvalonia.Services.ItemDialogs
 
             string result = await openFolderDialog.ShowAsync(windowInstance);
 
-            Item = new Item(result);
             IsSuccess = !string.IsNullOrEmpty(result);
+            if (IsSuccess)
+                Item = new Item(result);
         }
     }
 }

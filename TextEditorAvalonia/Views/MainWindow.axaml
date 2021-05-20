@@ -15,14 +15,14 @@
 
 		<StackPanel VerticalAlignment="Center" Orientation="Horizontal" Spacing="10" Margin="10 5 5 5" Grid.Column="0" Grid.Row="0">
 			<Image Source="/Assets/texteditor-logo.ico" Width="25" Height="25" Stretch="Uniform"/>
-			
+
 			<!--File menu-->
 			<Menu>
 				<MenuItem Header="_File">
 					<MenuItem Header="Open F_older" Command="{Binding OpenFolderCommand}"/>
 					<MenuItem Header="Open F_ile" Command="{Binding OpenFileCommand}"/>
 					<Separator/>
-					
+
 					<!--Save button should be disabled if no file is opened-->
 					<MenuItem IsEnabled="{Binding CanSaveFile}" Header="S_ave File" Command="{Binding SaveFileCommand}"/>
 				</MenuItem>
@@ -34,7 +34,13 @@
 
 					<!--Not functional yet-->
 					<MenuItem Header="_Theme">
-						<ToggleSwitch OffContent="Dark"/>
+						<StackPanel>
+							<ToggleSwitch OffContent="Dark"
+										  IsChecked="{Binding IsLightTheme}"
+										  Command="{Binding ChangeThemeCommand}"
+										  CommandParameter="{Binding $self.IsChecked}"/>
+							<Label Content="Next launch will have the updated theme."/>
+						</StackPanel>
 					</MenuItem>
 
 					<MenuItem Header="_GitHub"/>

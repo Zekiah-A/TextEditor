@@ -1,8 +1,11 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Themes.Fluent;
 using ReactiveUI;
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Reactive;
 using System.Threading.Tasks;
 using TextEditorAvalonia.Models;
@@ -14,23 +17,39 @@ namespace TextEditorAvalonia.ViewModels
     public class MainWindowViewModel : ViewModelBase
     {
         public TextEditorViewModel TextEditorViewModel { set; get; } = new TextEditorViewModel();
+        private ThemeManagerService ThemeManagerService { get; } = new ThemeManagerService();
 
         private bool _canSaveFile;
         public bool CanSaveFile { set => this.RaiseAndSetIfChanged(ref _canSaveFile, value); get => _canSaveFile; }
+
+        private bool _isLightTheme;
+        public bool IsLightTheme { set => this.RaiseAndSetIfChanged(ref _isLightTheme, value); get => _isLightTheme; }
 
         // File menu
         public ReactiveCommand<Unit, Unit> OpenFolderCommand { get; }
         public ReactiveCommand<Unit, Unit> OpenFileCommand { get; }
         public ReactiveCommand<Unit, Unit> SaveFileCommand { get; }
 
+        // Settings menu
+        public ReactiveCommand<bool, Unit> ChangeThemeCommand { get; }
+
         public MainWindowViewModel()
         {
+            IsLightTheme = ThemeManagerService.ApplyTheme();
+
+            this.WhenAnyValue(value => value.TextEditorViewModel.SelectedItem)
+                .Subscribe(_ => CanSaveFile = TextEditorViewModel.SelectedItem != null);
+
             OpenFolderCommand = ReactiveCommand.CreateFromTask(HandleOpenFolderMenu);
             OpenFileCommand = ReactiveCommand.CreateFromTask(HandleOpenFileMenu);
             SaveFileCommand = ReactiveCommand.CreateFromTask(HandleSaveFileMenu);
 
-            this.WhenAnyValue(value => value.TextEditorViewModel.SelectedItem)
-                .Subscribe(_ => CanSaveFile = TextEditorViewModel.SelectedItem != null);
+            ChangeThemeCommand = ReactiveCommand.CreateFromTask<bool>(HandleChangeTheme);
+        }
+
+        public async Task HandleChangeTheme(bool isLightMode)
+        {
+            await ThemeManagerService.UpdateTheme(isLightMode);
         }
 
         public async Task HandleOpenFolderMenu()
@@ -56,7 +75,7 @@ namespace TextEditorAvalonia.ViewModels
 
         public async Task HandleSaveFileMenu()
         {
-            ISaveFileService saveFileService = new SaveFileService();
+            SaveFileService saveFileService = new SaveFileService();
 
             Item selectedItem = TextEditorViewModel.SelectedItem!;
             await saveFileService.RequestSave(selectedItem.Path, selectedItem.Content!);

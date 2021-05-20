@@ -4,14 +4,7 @@ using System.Threading.Tasks;
 
 namespace TextEditorAvalonia.Services
 {
-    public interface ISaveFileService
-    {
-        public Task RequestSave(string path, string content);
-
-        public bool SaveSucceeded { get; }
-    }
-
-    public class SaveFileService : ISaveFileService
+    public class SaveFileService
     {
         public bool SaveSucceeded { private set; get; }
 

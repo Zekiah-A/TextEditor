@@ -4,18 +4,18 @@
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		x:Class="TextEditorAvalonia.Views.MainWindow"
 		Icon="/Assets/texteditor-logo.ico"
-		Height="576" Width="1024" MinHeight="576" MinWidth="1024" WindowStartupLocation="CenterScreen"
-	    Title="{Binding ApplicationTitle}" ExtendClientAreaToDecorationsHint="True">
+		Height="576" Width="1024" WindowStartupLocation="CenterScreen"
+	    Title="Text Editor" ExtendClientAreaToDecorationsHint="True">
 	<Design.DataContext>
 		<vm:MainWindowViewModel/>
 	</Design.DataContext>
 
 	<Grid ColumnDefinitions="Auto *" RowDefinitions="Auto *">
-		<Grid Grid.Column="1" RowDefinitions="0" IsHitTestVisible="False"/>
+		<Grid Grid.ColumnSpan="2" RowDefinitions="0" IsHitTestVisible="False"/>
 
-		<StackPanel VerticalAlignment="Center" Orientation="Horizontal" Spacing="5" Margin="5 0 0 0" Grid.Column="0" Grid.Row="0">
-			<Image Source="/Assets/texteditor-logo.ico" Width="25" Height="25"/>
-
+		<StackPanel VerticalAlignment="Center" Orientation="Horizontal" Spacing="10" Margin="10 5 5 5" Grid.Column="0" Grid.Row="0">
+			<Image Source="/Assets/texteditor-logo.ico" Width="25" Height="25" Stretch="Uniform"/>
+			
 			<!--File menu-->
 			<Menu>
 				<MenuItem Header="_File">
@@ -24,7 +24,7 @@
 					<Separator/>
 					
 					<!--Save button should be disabled if no file is opened-->
-					<MenuItem IsEnabled="{Binding IsReadyToEdit}" Header="S_ave File" Command="{Binding SaveFileCommand}"/>
+					<MenuItem IsEnabled="{Binding CanSaveFile}" Header="S_ave File" Command="{Binding SaveFileCommand}"/>
 				</MenuItem>
 			</Menu>
 
@@ -34,7 +34,7 @@
 
 					<!--Not functional yet-->
 					<MenuItem Header="_Theme">
-						<ToggleSwitch  OnContent="Light" OffContent="Dark"/>
+						<ToggleSwitch OffContent="Dark"/>
 					</MenuItem>
 
 					<MenuItem Header="_GitHub"/>
@@ -44,11 +44,8 @@
 			</Menu>
 		</StackPanel>
 
-		<Label Content="{Binding ApplicationTitle}" VerticalAlignment="Center" HorizontalAlignment="Center"
-			   Grid.ColumnSpan="2" IsHitTestVisible="False"/>
-
 		<!--Responsible for showing the text editor view-->
-		<ContentControl IsVisible="{Binding IsReadyToEdit}" Content="{Binding TextEditorViewModel}"
+		<ContentControl Content="{Binding TextEditorViewModel}"
 						Grid.ColumnSpan="2" Grid.Row="1"/>
 	</Grid>
 </Window>

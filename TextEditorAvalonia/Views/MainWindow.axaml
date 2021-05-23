@@ -36,6 +36,7 @@
 					<MenuItem Header="_Theme">
 						<StackPanel>
 							<ToggleSwitch OffContent="Dark"
+										  OnContent="Light"
 										  IsChecked="{Binding IsLightTheme}"
 										  Command="{Binding ChangeThemeCommand}"
 										  CommandParameter="{Binding $self.IsChecked}"/>

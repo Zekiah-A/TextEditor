@@ -1,17 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.10.4" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.4" />
-    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.4" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.4" />
-    <PackageReference Include="Projektanker.Icons.Avalonia.FontAwesome" Version="3.1.0" />
+    <PackageReference Include="Avalonia" Version="11.0.5" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.5" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="11.0.5" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.5" />
+    <PackageReference Include="Projektanker.Icons.Avalonia.FontAwesome" Version="8.3.0" />
   </ItemGroup>
 </Project>

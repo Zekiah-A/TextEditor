@@ -1,7 +1,6 @@
 <Window xmlns="https://github.com/avaloniaui"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:vm="using:TextEditorAvalonia.ViewModels"
-		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		x:Class="TextEditorAvalonia.Views.MainWindow"
 		Icon="/Assets/texteditor-logo.ico"
 		Height="576" Width="1024" WindowStartupLocation="CenterScreen"

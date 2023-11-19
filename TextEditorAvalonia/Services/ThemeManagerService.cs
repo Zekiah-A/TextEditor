@@ -1,52 +1,50 @@
 ﻿using Avalonia;
-using Avalonia.Themes.Fluent;
 using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace TextEditorAvalonia.Services
+namespace TextEditorAvalonia.Services;
+
+class ThemeManagerService
 {
-    class ThemeManagerService
+    private SaveFileService _saveFileService = new SaveFileService();
+
+    // Not sure if it works cross-platform
+    private readonly string _PATH = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + Path.DirectorySeparatorChar + "TextEditorSelectedTheme.txt";
+
+    private void AddTheme(bool isLightTheme)
     {
-        private SaveFileService _saveFileService = new SaveFileService();
+        /*Application.Current.Styles.Clear();
+        FluentThemeMode mode = isLightTheme ? FluentThemeMode.Light : FluentThemeMode.Dark;
+        FluentTheme fluentTheme = new FluentTheme(new Uri(@"avares://Avalonia.Themes.Fluent/FluentTheme.xaml")) { Mode = mode };
+        Application.Current.Styles.Add(fluentTheme);*/
+    }
 
-        // Not sure if it works cross-platform
-        private readonly string _PATH = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + Path.DirectorySeparatorChar + "TextEditorSelectedTheme.txt";
-
-        private void AddTheme(bool isLightTheme)
+    public bool ApplyTheme()
+    {
+        bool isLightTheme = false;
+        if (File.Exists(_PATH))
         {
-            Application.Current.Styles.Clear();
-            FluentThemeMode mode = isLightTheme ? FluentThemeMode.Light : FluentThemeMode.Dark;
-            FluentTheme fluentTheme = new FluentTheme(new Uri(@"avares://Avalonia.Themes.Fluent/FluentTheme.xaml")) { Mode = mode };
-            Application.Current.Styles.Add(fluentTheme);
+            isLightTheme = File.ReadAllText(_PATH).Contains("light");
+            AddTheme(isLightTheme);
         }
-
-        public bool ApplyTheme()
+        else
         {
-            bool isLightTheme = false;
-            if (File.Exists(_PATH))
-            {
-                isLightTheme = File.ReadAllText(_PATH).Contains("light");
-                AddTheme(isLightTheme);
-            }
-            else
-            {
-                AddTheme(false);
-                File.Create(_PATH);
-            }
-            return isLightTheme;
+            AddTheme(false);
+            File.Create(_PATH);
         }
+        return isLightTheme;
+    }
 
-        public async Task UpdateTheme(bool isLightTheme)
+    public async Task UpdateTheme(bool isLightTheme)
+    {
+        if (File.Exists(_PATH))
         {
-            if (File.Exists(_PATH))
-            {
-                await _saveFileService.RequestSave(_PATH, isLightTheme ? "light" : "dark");
-            }
-            else
-            {
-                await _saveFileService.RequestSave(_PATH, "dark");
-            }
+            await _saveFileService.RequestSave(_PATH, isLightTheme ? "light" : "dark");
+        }
+        else
+        {
+            await _saveFileService.RequestSave(_PATH, "dark");
         }
     }
 }

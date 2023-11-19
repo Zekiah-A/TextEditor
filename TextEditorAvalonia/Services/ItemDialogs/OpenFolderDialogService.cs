@@ -1,24 +1,26 @@
 ﻿using Avalonia.Controls;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Threading.Tasks;
 using TextEditorAvalonia.Models;
 
-namespace TextEditorAvalonia.Services.ItemDialogs
+namespace TextEditorAvalonia.Services.ItemDialogs;
+
+public class OpenFolderDialogService : IOpenItemDialogService
 {
-    public class OpenFolderDialogService : IOpenItemDialogService
+    public Item Item { private set; get; } = new Item("", "");
+
+    public bool IsSuccess { private set; get; }
+
+    public async Task ShowAsync(Window? windowInstance)
     {
-        public Item Item { private set; get; } = new Item("", "");
+        /*var openFolderDialog = new OpenFolderDialog();
 
-        public bool IsSuccess { private set; get; }
+        var result = await openFolderDialog.ShowAsync(windowInstance);
 
-        public async Task ShowAsync(Window? windowInstance)
+        IsSuccess = !string.IsNullOrEmpty(result);
+        if (IsSuccess)
         {
-            OpenFolderDialog openFolderDialog = new OpenFolderDialog();
-
-            string result = await openFolderDialog.ShowAsync(windowInstance);
-
-            IsSuccess = !string.IsNullOrEmpty(result);
-            if (IsSuccess)
-                Item = new Item(result);
-        }
+            Item = new Item(result);
+        }*/
     }
 }

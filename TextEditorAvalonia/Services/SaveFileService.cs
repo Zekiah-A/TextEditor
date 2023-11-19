@@ -12,13 +12,12 @@ public class SaveFileService
     {
         try
         {
-            using StreamWriter streamWriter = new StreamWriter(path);
+            await using var streamWriter = new StreamWriter(path);
             await streamWriter.WriteAsync(content);
             SaveSucceeded = true;
         }
         catch (Exception exception) when (exception is DirectoryNotFoundException
-            || exception is IOException || exception is UnauthorizedAccessException
-            || exception is ArgumentException)
+            or IOException or UnauthorizedAccessException or ArgumentException)
         {
             SaveSucceeded = false;
         }

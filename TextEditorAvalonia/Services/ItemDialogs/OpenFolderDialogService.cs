@@ -13,7 +13,7 @@ public class OpenFolderDialogService : IOpenItemDialogService
 
     public async Task ShowAsync(Window? windowInstance)
     {
-        /*var openFolderDialog = new OpenFolderDialog();
+        var openFolderDialog = new OpenFolderDialog();
 
         var result = await openFolderDialog.ShowAsync(windowInstance);
 
@@ -21,6 +21,6 @@ public class OpenFolderDialogService : IOpenItemDialogService
         if (IsSuccess)
         {
             Item = new Item(result);
-        }*/
+        }
     }
 }

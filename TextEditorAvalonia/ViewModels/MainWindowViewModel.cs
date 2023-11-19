@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reactive;
 using System.Threading.Tasks;
+using Avalonia.Styling;
 using TextEditorAvalonia.Models;
 using TextEditorAvalonia.Services;
 using TextEditorAvalonia.Services.ItemDialogs;
@@ -18,12 +19,11 @@ public class MainWindowViewModel : ViewModelBase
     public TextEditorViewModel TextEditorViewModel { set; get; } = new TextEditorViewModel();
     private ThemeManagerService ThemeManagerService { get; } = new ThemeManagerService();
 
-    private bool _canSaveFile;
-    public bool CanSaveFile { set => this.RaiseAndSetIfChanged(ref _canSaveFile, value); get => _canSaveFile; }
-
-    private bool _isLightTheme;
-    public bool IsLightTheme { set => this.RaiseAndSetIfChanged(ref _isLightTheme, value); get => _isLightTheme; }
-
+    private bool canSaveFile;
+    public bool CanSaveFile { set => this.RaiseAndSetIfChanged(ref canSaveFile, value); get => canSaveFile; }
+    private bool isLightTheme;
+    public bool IsLightTheme { set => this.RaiseAndSetIfChanged(ref isLightTheme, value); get => isLightTheme; }
+        
     // File menu
     public ReactiveCommand<Unit, Unit> OpenFolderCommand { get; }
     public ReactiveCommand<Unit, Unit> OpenFileCommand { get; }
@@ -42,7 +42,6 @@ public class MainWindowViewModel : ViewModelBase
         OpenFolderCommand = ReactiveCommand.CreateFromTask(HandleOpenFolderMenu);
         OpenFileCommand = ReactiveCommand.CreateFromTask(HandleOpenFileMenu);
         SaveFileCommand = ReactiveCommand.CreateFromTask(HandleSaveFileMenu);
-
         ChangeThemeCommand = ReactiveCommand.CreateFromTask<bool>(HandleChangeTheme);
     }
 
@@ -64,19 +63,22 @@ public class MainWindowViewModel : ViewModelBase
 
         if (openFileDialogService.IsSuccess)
         {
-            foreach (Item item in TextEditorViewModel.Items)
+            foreach (var item in TextEditorViewModel.Items)
+            {
                 if (item.Name == openFileDialogService.Item.Name)
+                {
                     return;
-
+                }
+            }
+            
             TextEditorViewModel.Items.Add(openFileDialogService.Item);
         }
     }
 
     public async Task HandleSaveFileMenu()
     {
-        SaveFileService saveFileService = new SaveFileService();
-
-        Item selectedItem = TextEditorViewModel.SelectedItem!;
+        var saveFileService = new SaveFileService();
+        var selectedItem = TextEditorViewModel.SelectedItem!;
         await saveFileService.RequestSave(selectedItem.Path, selectedItem.Content!);
     }
 

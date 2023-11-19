@@ -26,8 +26,8 @@ public class Item
     {
         Path = path;
 
-        string[] subFolderPaths = Directory.GetDirectories(path, "*", SearchOption.AllDirectories);
-        foreach (string folderPath in subFolderPaths)
+        var subFolderPaths = Directory.GetDirectories(path, "*", SearchOption.AllDirectories);
+        foreach (var folderPath in subFolderPaths)
         {
             SubItems.Add(new Item(folderPath));
         }

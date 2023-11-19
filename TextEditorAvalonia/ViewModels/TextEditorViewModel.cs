@@ -11,17 +11,17 @@ public class TextEditorViewModel : ViewModelBase
     // Items in file explorer
     public ObservableCollection<Item> Items { set; get; } = new ObservableCollection<Item>();
 
-    private Item? _selectedItem;
+    private Item? selectedItem;
     public Item? SelectedItem
     {
         set
         {
-            this.RaiseAndSetIfChanged(ref _selectedItem, value);
+            this.RaiseAndSetIfChanged(ref selectedItem, value);
             if (!OpenedItems.Contains(SelectedItem!))
             {
                 OpenedItems.Add(SelectedItem!);
             }
         }
-        get => _selectedItem;
+        get => selectedItem;
     }
 }

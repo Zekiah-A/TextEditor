@@ -13,7 +13,7 @@ public class OpenFileDialogService : IOpenItemDialogService
 
     public async Task ShowAsync(Window? windowInstance)
     {
-        /*OpenFileDialog openFileDialog = new OpenFileDialog();
+        OpenFileDialog openFileDialog = new OpenFileDialog();
         openFileDialog.AllowMultiple = false;
 
         string[] result = await openFileDialog.ShowAsync(windowInstance);
@@ -24,6 +24,6 @@ public class OpenFileDialogService : IOpenItemDialogService
         }
 
         Item = new Item(result[0], await File.ReadAllTextAsync(result[0]));
-        IsSuccess = true;*/
+        IsSuccess = true;
     }
 }

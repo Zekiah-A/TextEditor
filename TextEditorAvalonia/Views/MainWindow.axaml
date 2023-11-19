@@ -3,8 +3,12 @@
 		xmlns:vm="using:TextEditorAvalonia.ViewModels"
 		x:Class="TextEditorAvalonia.Views.MainWindow"
 		Icon="/Assets/texteditor-logo.ico"
-		Height="576" Width="1024" WindowStartupLocation="CenterScreen"
-	    Title="Text Editor" ExtendClientAreaToDecorationsHint="True">
+		Height="576" Width="1024"
+		Title="Text Editor" WindowStartupLocation="CenterScreen"
+	    ExtendClientAreaToDecorationsHint="True"
+		TransparencyLevelHint="Blur"
+		TransparencyBackgroundFallback="LightBlue"
+		Background="#b2ffffff">
 	<Design.DataContext>
 		<vm:MainWindowViewModel/>
 	</Design.DataContext>
@@ -14,24 +18,19 @@
 
 		<StackPanel VerticalAlignment="Center" Orientation="Horizontal" Spacing="10" Margin="10 5 5 5" Grid.Column="0" Grid.Row="0">
 			<Image Source="/Assets/texteditor-logo.ico" Width="25" Height="25" Stretch="Uniform"/>
-
-			<!--File menu-->
+			
 			<Menu>
 				<MenuItem Header="_File">
 					<MenuItem Header="Open F_older" Command="{Binding OpenFolderCommand}"/>
 					<MenuItem Header="Open F_ile" Command="{Binding OpenFileCommand}"/>
 					<Separator/>
-
-					<!--Save button should be disabled if no file is opened-->
 					<MenuItem IsEnabled="{Binding CanSaveFile}" Header="S_ave File" Command="{Binding SaveFileCommand}"/>
 				</MenuItem>
 			</Menu>
 
-			<!--Settings menu-->
 			<Menu>
 				<MenuItem Header="_Settings">
 
-					<!--Not functional yet-->
 					<MenuItem Header="_Theme">
 						<StackPanel>
 							<ToggleSwitch OffContent="Dark"
@@ -39,7 +38,6 @@
 										  IsChecked="{Binding IsLightTheme}"
 										  Command="{Binding ChangeThemeCommand}"
 										  CommandParameter="{Binding $self.IsChecked}"/>
-							<Label Content="Next launch will have the updated theme."/>
 						</StackPanel>
 					</MenuItem>
 
@@ -50,8 +48,8 @@
 			</Menu>
 		</StackPanel>
 
-		<!--Responsible for showing the text editor view-->
-		<ContentControl Content="{Binding TextEditorViewModel}"
-						Grid.ColumnSpan="2" Grid.Row="1"/>
+		<Border Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Background="White" CornerRadius="8 8 0 0" BorderThickness="0 1 0 0">
+			<ContentControl Content="{Binding TextEditorViewModel}"/>
+		</Border>
 	</Grid>
 </Window>

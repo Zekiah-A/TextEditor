@@ -5,7 +5,6 @@
 		Icon="/Assets/texteditor-logo.ico"
 		Height="576" Width="1024"
 		Title="Text Editor" WindowStartupLocation="CenterScreen"
-	    ExtendClientAreaToDecorationsHint="True"
 		TransparencyLevelHint="Blur"
 		TransparencyBackgroundFallback="LightBlue"
 		Background="{DynamicResource BackgroundBlurColour}"

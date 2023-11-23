@@ -11,7 +11,15 @@ namespace TextEditorAvalonia.Views;
 public partial class MainWindow : Window
 {
     private bool dragging;
-    private DragEdge draggingEdge = DragEdge.None;
+    private WindowEdge? draggingEdge = null;
+    private readonly Cursor topLeftCursor = new Cursor(StandardCursorType.TopLeftCorner);
+    private readonly Cursor leftCursor = new Cursor(StandardCursorType.LeftSide);
+    private readonly Cursor bottomLeftCursor = new Cursor(StandardCursorType.BottomLeftCorner);
+    private readonly Cursor bottomCursor = new Cursor(StandardCursorType.BottomSide);
+    private readonly Cursor bottomRightCursor = new Cursor(StandardCursorType.BottomRightCorner);
+    private readonly Cursor rightCursor = new Cursor(StandardCursorType.RightSide);
+    private readonly Cursor topRightCursor = new Cursor(StandardCursorType.TopRightCorner);
+    private readonly Cursor topCursor = new Cursor(StandardCursorType.TopSide);
     const int dragMargin = 8;
 
     public MainWindow()
@@ -22,6 +30,10 @@ public partial class MainWindow : Window
         {
             SystemDecorations = SystemDecorations.BorderOnly;
             HeaderControls.IsVisible = true;
+        }
+        else
+        {
+            ExtendClientAreaToDecorationsHint = true;
         }
     }
 
@@ -64,120 +76,58 @@ public partial class MainWindow : Window
             Cursor = GetDraggingEdgeCursor(hoveringEdge);
             return;
         }
-        
-        var mousePos = e.GetPosition(this);
-        void UpdateRight()
-        {
-            Width = mousePos.X;
-        }
-        void UpdateBottom()
-        {
-            Height = mousePos.Y;
-        }
-        void UpdateLeft()
-        {
-            Position = new PixelPoint((int)(Position.X + mousePos.X), Position.Y);
-            Width -= mousePos.X;
-        }
-        void UpdateTop()
-        {
-            Position = new PixelPoint(Position.X, (int)(Position.Y + mousePos.Y));
-            Height -= mousePos.Y;
-        }
-        
-        switch (draggingEdge)
-        {
-            case DragEdge.Right:
-                UpdateRight();
-                break;
-            case DragEdge.Bottom:
-                UpdateBottom();
-                break;
-            case DragEdge.BottomRight:
-                UpdateRight();
-                UpdateBottom();
-                break;
-            case DragEdge.Left:
-                UpdateLeft();
-                break;
-            case DragEdge.Top:
-                UpdateTop();
-                break;
-            case DragEdge.BottomLeft:
-                UpdateBottom();
-                UpdateLeft();
-                break;
-            case DragEdge.TopLeft:
-                UpdateTop();
-                UpdateLeft();
-                break;
-            case DragEdge.TopRight:
-                UpdateTop();
-                UpdateRight();
-                break;
-        }
     }
 
-    private readonly Cursor topLeftCursor = new Cursor(StandardCursorType.TopLeftCorner);
-    private readonly Cursor leftCursor = new Cursor(StandardCursorType.LeftSide);
-    private readonly Cursor bottomLeftCursor = new Cursor(StandardCursorType.BottomLeftCorner);
-    private readonly Cursor bottomCursor = new Cursor(StandardCursorType.BottomSide);
-    private readonly Cursor bottomRightCursor = new Cursor(StandardCursorType.BottomRightCorner);
-    private readonly Cursor rightCursor = new Cursor(StandardCursorType.RightSide);
-    private readonly Cursor topRightCursor = new Cursor(StandardCursorType.TopRightCorner);
-    private readonly Cursor topCursor = new Cursor(StandardCursorType.TopSide);
-
-    private DragEdge GetCursorEdge(Point mousePos)
+    private WindowEdge? GetCursorEdge(Point mousePos)
     {
         if (mousePos.X < dragMargin && mousePos.Y < dragMargin)
         {
-            return DragEdge.TopLeft;
+            return WindowEdge.NorthWest;
         }
         if (mousePos.X < dragMargin && mousePos.Y > Height - dragMargin)
         {
-            return DragEdge.BottomLeft;
+            return WindowEdge.SouthWest;
         }
         if (mousePos.X < dragMargin && mousePos.X < dragMargin)
         {
-            return DragEdge.Left;
+            return WindowEdge.West;
         }
         if (mousePos.X > Width - dragMargin && mousePos.Y < dragMargin)
         {
-            return DragEdge.TopRight;
+            return WindowEdge.NorthEast;
         }
         if (mousePos.X > Width - dragMargin && mousePos.Y > Height - dragMargin)
         {
-            return DragEdge.BottomRight;
+            return WindowEdge.SouthEast;
         }
         if (mousePos.X > Width - dragMargin)
         {
-            return DragEdge.Right;
+            return WindowEdge.East;
         }
         if (mousePos.Y < dragMargin)
         {
-            return DragEdge.Top;
+            return WindowEdge.North;
         }
         if (mousePos.Y > Height - dragMargin)
         {
-            return DragEdge.Bottom;
+            return WindowEdge.South;
         }
         
-        return DragEdge.None;
+        return null;
     }
 
-    private Cursor GetDraggingEdgeCursor(DragEdge edge)
+    private Cursor GetDraggingEdgeCursor(WindowEdge? edge)
     {
         return edge switch
         {
-            DragEdge.TopLeft => topLeftCursor,
-            DragEdge.Left => leftCursor,
-            DragEdge.BottomLeft => bottomLeftCursor,
-            DragEdge.Bottom => bottomCursor,
-            DragEdge.BottomRight => bottomRightCursor,
-            DragEdge.Right => rightCursor,
-            DragEdge.TopRight => topRightCursor,
-            DragEdge.Top => topCursor,
-            DragEdge.None => Cursor.Default,
+            WindowEdge.NorthWest => topLeftCursor,
+            WindowEdge.West => leftCursor,
+            WindowEdge.SouthWest => bottomLeftCursor,
+            WindowEdge.South => bottomCursor,
+            WindowEdge.SouthEast => bottomRightCursor,
+            WindowEdge.East => rightCursor,
+            WindowEdge.NorthEast => topRightCursor,
+            WindowEdge.North => topCursor,
             _ => Cursor.Default
         };
     }
@@ -185,11 +135,14 @@ public partial class MainWindow : Window
     private void OnBackgroundPointerPress(object? sender, PointerPressedEventArgs e)
     {
         draggingEdge = GetCursorEdge(e.GetPosition(this));
-        if (draggingEdge == DragEdge.None)
+        if (draggingEdge == null)
         {
+            BeginMoveDrag(e);
+            
             return;
         }
 
+        BeginResizeDrag(draggingEdge.Value, e);
         Cursor = GetDraggingEdgeCursor(draggingEdge);
         dragging = true;
     }
@@ -197,7 +150,7 @@ public partial class MainWindow : Window
     private void OnBackgroundPointerRelease(object? sender, PointerReleasedEventArgs e)
     {
         if (dragging)
-        {
+        {   
             Cursor = Cursor.Default;
         }
         

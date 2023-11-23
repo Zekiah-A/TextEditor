@@ -8,13 +8,28 @@
 	    ExtendClientAreaToDecorationsHint="True"
 		TransparencyLevelHint="Blur"
 		TransparencyBackgroundFallback="LightBlue"
-		Background="#b2ffffff"
+		Background="{DynamicResource BackgroundBlurColour}"
 		PointerMoved="OnBackgroundPointerMove"
 		PointerPressed="OnBackgroundPointerPress"
 		PointerReleased="OnBackgroundPointerRelease">
 	<Design.DataContext>
 		<vm:MainWindowViewModel/>
 	</Design.DataContext>
+	
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.ThemeDictionaries>
+				<ResourceDictionary x:Key="Light">
+					<SolidColorBrush x:Key="ForegroundColour">White</SolidColorBrush>
+					<SolidColorBrush x:Key="BackgroundBlurColour">#b2FFFFFF</SolidColorBrush>
+				</ResourceDictionary>
+				<ResourceDictionary x:Key="Dark">
+					<SolidColorBrush x:Key="ForegroundColour">#FF080808</SolidColorBrush>
+					<SolidColorBrush x:Key="BackgroundBlurColour">#b2151515</SolidColorBrush>
+				</ResourceDictionary>
+			</ResourceDictionary.ThemeDictionaries>
+		</ResourceDictionary>
+	</Window.Resources>
 	
 	<Border BorderBrush="Gray" BorderThickness="1">
 		<Grid ColumnDefinitions="Auto * Auto" RowDefinitions="Auto *">
@@ -47,7 +62,7 @@
 				<Button FontFamily="{StaticResource SegMDL2}" x:Name="MaximiseRestore" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="Transparent" FontSize="10" Width="48" CornerRadius="0" Content="&#xE922;"  Click="OnMaximiseRestoreClicked" /> <!--&#xE923;-->
 				<Button FontFamily="{StaticResource SegMDL2}" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="Transparent" FontSize="10" Width="48" CornerRadius="0" Content="&#xE8BB;"  Click="OnCloseClicked" />
 			</StackPanel>
-			<Border Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Background="White" CornerRadius="8 8 0 0" BorderThickness="0 2 0 0">
+			<Border Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Background="{DynamicResource ForegroundColour}" CornerRadius="8 8 0 0" BorderThickness="0 2 0 0">
 				<ContentControl Content="{Binding TextEditorViewModel}"/>
 			</Border>
 		</Grid>

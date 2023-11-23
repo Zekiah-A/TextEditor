@@ -12,7 +12,7 @@ public partial class MainWindow : Window
 {
     private bool dragging;
     private DragEdge draggingEdge = DragEdge.None;
-    const int dragMargin = 16;
+    const int dragMargin = 8;
 
     public MainWindow()
     {
@@ -52,11 +52,16 @@ public partial class MainWindow : Window
         } 
     }
 
-
     private void OnBackgroundPointerMove(object? sender, PointerEventArgs e)
     {
-        if (!dragging || WindowState == WindowState.Maximized)
+        if (WindowState == WindowState.Maximized)
         {
+            return;
+        }
+        if (!dragging)
+        {
+            var hoveringEdge = GetCursorEdge(e.GetPosition(this));
+            Cursor = GetDraggingEdgeCursor(hoveringEdge);
             return;
         }
         
@@ -122,60 +127,80 @@ public partial class MainWindow : Window
     private readonly Cursor topRightCursor = new Cursor(StandardCursorType.TopRightCorner);
     private readonly Cursor topCursor = new Cursor(StandardCursorType.TopSide);
 
+    private DragEdge GetCursorEdge(Point mousePos)
+    {
+        if (mousePos.X < dragMargin && mousePos.Y < dragMargin)
+        {
+            return DragEdge.TopLeft;
+        }
+        if (mousePos.X < dragMargin && mousePos.Y > Height - dragMargin)
+        {
+            return DragEdge.BottomLeft;
+        }
+        if (mousePos.X < dragMargin && mousePos.X < dragMargin)
+        {
+            return DragEdge.Left;
+        }
+        if (mousePos.X > Width - dragMargin && mousePos.Y < dragMargin)
+        {
+            return DragEdge.TopRight;
+        }
+        if (mousePos.X > Width - dragMargin && mousePos.Y > Height - dragMargin)
+        {
+            return DragEdge.BottomRight;
+        }
+        if (mousePos.X > Width - dragMargin)
+        {
+            return DragEdge.Right;
+        }
+        if (mousePos.Y < dragMargin)
+        {
+            return DragEdge.Top;
+        }
+        if (mousePos.Y > Height - dragMargin)
+        {
+            return DragEdge.Bottom;
+        }
+        
+        return DragEdge.None;
+    }
+
+    private Cursor GetDraggingEdgeCursor(DragEdge edge)
+    {
+        return edge switch
+        {
+            DragEdge.TopLeft => topLeftCursor,
+            DragEdge.Left => leftCursor,
+            DragEdge.BottomLeft => bottomLeftCursor,
+            DragEdge.Bottom => bottomCursor,
+            DragEdge.BottomRight => bottomRightCursor,
+            DragEdge.Right => rightCursor,
+            DragEdge.TopRight => topRightCursor,
+            DragEdge.Top => topCursor,
+            DragEdge.None => Cursor.Default,
+            _ => Cursor.Default
+        };
+    }
 
     private void OnBackgroundPointerPress(object? sender, PointerPressedEventArgs e)
     {
+        draggingEdge = GetCursorEdge(e.GetPosition(this));
+        if (draggingEdge == DragEdge.None)
+        {
+            return;
+        }
+
+        Cursor = GetDraggingEdgeCursor(draggingEdge);
         dragging = true;
-        var mousePos = e.GetPosition(this);
-        if (mousePos.X < dragMargin && mousePos.Y < dragMargin)
-        {
-            draggingEdge = DragEdge.TopLeft;
-            Cursor = topLeftCursor;
-        }
-        else if (mousePos.X < dragMargin && mousePos.Y > Height - dragMargin)
-        {
-            draggingEdge = DragEdge.BottomLeft;
-            Cursor = bottomLeftCursor;
-        }
-        else if (mousePos.X < dragMargin && mousePos.X < dragMargin)
-        {
-            draggingEdge = DragEdge.Left;
-            Cursor = leftCursor;
-        }
-        else if (mousePos.X > Width - dragMargin && mousePos.Y < dragMargin)
-        {
-            draggingEdge = DragEdge.TopRight;
-            Cursor = topRightCursor;
-        }
-        else if (mousePos.X > Width - dragMargin && mousePos.Y > Height - dragMargin)
-        {
-            draggingEdge = DragEdge.BottomRight;
-            Cursor = bottomRightCursor;
-        }
-        else if (mousePos.X > Width - dragMargin)
-        {
-            draggingEdge = DragEdge.Right;
-            Cursor = rightCursor;
-        }
-        else if (mousePos.Y < dragMargin)
-        {
-            draggingEdge = DragEdge.Top;
-            Cursor = topCursor;
-        }
-        else if (mousePos.Y > Height - dragMargin)
-        {
-            draggingEdge = DragEdge.Bottom;
-            Cursor = bottomCursor;
-        }
-        else
-        {
-            draggingEdge = DragEdge.None;
-            Cursor = Cursor.Default;
-        }        
     }
 
     private void OnBackgroundPointerRelease(object? sender, PointerReleasedEventArgs e)
     {
+        if (dragging)
+        {
+            Cursor = Cursor.Default;
+        }
+        
         dragging = false;
     }
 }

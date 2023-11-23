@@ -8,48 +8,48 @@
 	    ExtendClientAreaToDecorationsHint="True"
 		TransparencyLevelHint="Blur"
 		TransparencyBackgroundFallback="LightBlue"
-		Background="#b2ffffff">
+		Background="#b2ffffff"
+		PointerMoved="OnBackgroundPointerMove"
+		PointerPressed="OnBackgroundPointerPress"
+		PointerReleased="OnBackgroundPointerRelease">
 	<Design.DataContext>
 		<vm:MainWindowViewModel/>
 	</Design.DataContext>
-
-	<Grid ColumnDefinitions="Auto *" RowDefinitions="Auto *">
-		<Grid Grid.ColumnSpan="2" RowDefinitions="0" IsHitTestVisible="False"/>
-
-		<StackPanel VerticalAlignment="Center" Orientation="Horizontal" Spacing="10" Margin="10 5 5 5" Grid.Column="0" Grid.Row="0">
-			<Image Source="/Assets/texteditor-logo.ico" Width="25" Height="25" Stretch="Uniform"/>
-			
-			<Menu>
-				<MenuItem Header="_File">
-					<MenuItem Header="Open F_older" Command="{Binding OpenFolderCommand}"/>
-					<MenuItem Header="Open F_ile" Command="{Binding OpenFileCommand}"/>
-					<Separator/>
-					<MenuItem IsEnabled="{Binding CanSaveFile}" Header="S_ave File" Command="{Binding SaveFileCommand}"/>
-				</MenuItem>
-			</Menu>
-
-			<Menu>
-				<MenuItem Header="_Settings">
-
-					<MenuItem Header="_Theme">
-						<StackPanel>
-							<ToggleSwitch OffContent="Dark"
-										  OnContent="Light"
-										  IsChecked="{Binding IsLightTheme}"
-										  Command="{Binding ChangeThemeCommand}"
-										  CommandParameter="{Binding $self.IsChecked}"/>
-						</StackPanel>
+	
+	<Border BorderBrush="Gray" BorderThickness="1">
+		<Grid ColumnDefinitions="Auto * Auto" RowDefinitions="Auto *">
+			<StackPanel VerticalAlignment="Center" Orientation="Horizontal" Spacing="10" Margin="10 5 5 5" Grid.Column="0" Grid.Row="0">
+				<Image Source="/Assets/texteditor-logo.ico" Width="25" Height="25" Stretch="Uniform"/>
+				<Menu>
+					<MenuItem Header="_File">
+						<MenuItem Header="Open F_older" Command="{Binding OpenFolderCommand}"/>
+						<MenuItem Header="Open F_ile" Command="{Binding OpenFileCommand}"/>
+						<Separator/>
+						<MenuItem IsEnabled="{Binding CanSaveFile}" Header="S_ave File" Command="{Binding SaveFileCommand}"/>
 					</MenuItem>
-
-					<MenuItem Header="_GitHub"/>
-					<Separator/>
-					<MenuItem Header="_Exit"/>
-				</MenuItem>
-			</Menu>
-		</StackPanel>
-
-		<Border Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Background="White" CornerRadius="8 8 0 0" BorderThickness="0 1 0 0">
-			<ContentControl Content="{Binding TextEditorViewModel}"/>
-		</Border>
-	</Grid>
+				</Menu>
+				<Menu>
+					<MenuItem Header="_Settings">
+						<MenuItem Header="_Theme">
+							<StackPanel>
+								<ToggleSwitch OffContent="Dark" OnContent="Light" IsChecked="{Binding IsLightTheme}"
+									Command="{Binding ChangeThemeCommand}" CommandParameter="{Binding $self.IsChecked}"/>
+							</StackPanel>
+						</MenuItem>
+						<MenuItem Header="_GitHub"/>
+						<Separator/>
+						<MenuItem Header="_Exit"/>
+					</MenuItem>
+				</Menu>
+			</StackPanel>
+			<StackPanel x:Name="HeaderControls" IsVisible="False" VerticalAlignment="Stretch" Orientation="Horizontal" Grid.Column="2" Grid.Row="0">
+				<Button FontFamily="{StaticResource SegMDL2}" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="Transparent" FontSize="10" Width="48" CornerRadius="0" Content="&#xE921;" Click="OnMinimiseClicked" />
+				<Button FontFamily="{StaticResource SegMDL2}" x:Name="MaximiseRestore" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="Transparent" FontSize="10" Width="48" CornerRadius="0" Content="&#xE922;"  Click="OnMaximiseRestoreClicked" /> <!--&#xE923;-->
+				<Button FontFamily="{StaticResource SegMDL2}" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Background="Transparent" FontSize="10" Width="48" CornerRadius="0" Content="&#xE8BB;"  Click="OnCloseClicked" />
+			</StackPanel>
+			<Border Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Background="White" CornerRadius="8 8 0 0" BorderThickness="0 2 0 0">
+				<ContentControl Content="{Binding TextEditorViewModel}"/>
+			</Border>
+		</Grid>
+	</Border>
 </Window>

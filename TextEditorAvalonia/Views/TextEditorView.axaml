@@ -46,15 +46,15 @@
 			</TabControl.ContentTemplate>
 		</TabControl>
 
-		<TreeView SelectedItem="{Binding SelectedItem}" ItemsSource="{Binding Items}" Grid.Column="0" Grid.Row="0">
+		<TreeView SelectedItem="{Binding SelectedItem}" ItemsSource="{Binding Items}" Grid.Column="0" Grid.Row="0" Margin="8 8 0 8">
 			<TreeView.ItemTemplate>
 				<TreeDataTemplate ItemsSource="{Binding SubItems}">
-					<Label Content="{Binding Name}" ToolTip.Tip="{Binding Path}"/>
+					<Label Content="{Binding Name}" ToolTip.Tip="{Binding Path}" CornerRadius="4"/>
 				</TreeDataTemplate>
 			</TreeView.ItemTemplate>
 		</TreeView>
 
-		<GridSplitter ShowsPreview="True" Width="10" Grid.Column="1" Grid.Row="0" />
+		<GridSplitter Width="10" Grid.Column="1" Grid.Row="0" />
 		<Rectangle Fill="#999999" Width="1" Margin="10 10 0 10" Grid.Column="1" Grid.Row="0"/>
 	</Grid>
 </UserControl>

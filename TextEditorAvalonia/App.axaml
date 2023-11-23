@@ -10,4 +10,8 @@
 	<Application.Styles>
 		<FluentTheme/>
 	</Application.Styles>
+	
+	<Application.Resources>
+		<FontFamily x:Key="SegMDL2">avares://TextEditorAvalonia/Assets/Fonts#Segoe MDL2 Assets</FontFamily>
+	</Application.Resources>
 </Application>
